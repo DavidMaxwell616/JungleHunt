@@ -1,0 +1,9 @@
+body {
+  background: #1d1d1d;
+  padding: 0;
+}
+
+#game {
+  margin: auto;
+  width: 600px;
+}
