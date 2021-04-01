@@ -169,12 +169,10 @@ function arrowClick(gameObject)
         hunter.frame = 2;
         readyToJump = true;
         hunterOnRope = false;
-        arrowDown = true;
       }
       if (hunterOnRope) {
         if (hunter.body.velocity.x > 0) {
           hunter.body.velocity.x += 10;
-          arrowDown = true;
         }
       }
     break;
@@ -182,7 +180,6 @@ function arrowClick(gameObject)
       if (hunterOnRope) {
         if (hunter.body.velocity.x < 0) {
           hunter.body.velocity.x -= 10;
-          arrowDown = true;
         }
       }
     break;
@@ -244,7 +241,7 @@ function createVines(vineNum, length, name, xAnchor, yAnchor) {
         lastRect,
         vineSegments[i],
         0,
-        12,
+        10,
         0,
         -10,
       );

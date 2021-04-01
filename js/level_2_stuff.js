@@ -9,11 +9,6 @@ function createLevel2Stuff() {
   // level2bkgd3.height = game.height;
   level2bkgd3.visible = false;
 
-  bubbles = game.add.sprite(0, 0, 'bubbles');
-  bubbles.animations.add('bubble');
-  game.physics.box2d.enable(bubbles);
-  bubbles.visible = false;
-
   level2bkgd1 = game.add.sprite(0, 0, 'level 2 layer1');
   level2bkgd1.width = game.width * 3.4;
   level2bkgd1.visible = false;
@@ -29,16 +24,6 @@ function createLevel2Stuff() {
 
   airLabel = game.add.sprite(0, 0, 'airLabel');
   airLabel.visible = false;
-
-  for (let index = 0; index < MAX_CROCS; index += 1) {
-    crocs[index] = game.add.sprite(0, 0, 'croc');
-    crocs[index].visible = false;
-    crocs[index].anchor.setTo(0.5, 0.5);
-    crocs[index].state = DEAD;
-    crocs[index].burnCount = 0;
-    crocs[index].animations.add('bite');
-
-  }
 }
 
 function buildLevel2() {
@@ -48,9 +33,6 @@ function buildLevel2() {
   }
   airLabel.reset(game.width * 0.77, 92);
   amountCrocs = 2 + curLevel;
-  for (let index = 0; index < amountCrocs; index += 1) {
-    crocs[index].reset(0, 0);
-  }
   game.stage.backgroundColor = '#B0DAFF';
   level2bkgd1.reset(0, game.height * 0.69);
   level2bkgd3.reset(0, game.height * 0.65);
@@ -76,16 +58,15 @@ function buildLevel2() {
 
 function updateLevel2() {
   if (level2bkgd1.x > -600) {
-    for (let index = 0; index < amountCrocs; index += 1) {
-      if (
+  game.world.bringToTop(crocs);
+    if (
         game.rnd.integerInRange(1, 200) === 1 &&
-        crocs[index].state === DEAD &&
+        crocs.children.length<MAX_CROCS &&
         level2bkgd1.x > 0
       ) {
-        spawnCroc(index);
+        spawnCroc();
       }
-    }
-    if (level2bkgd1.x < -534)
+    if (level2bkgd1.x < -500)
       touchGround();
 
     if (levelOver && levelOverTimer < 60) {
@@ -102,19 +83,21 @@ function updateLevel2() {
       buildLevel();
     }
     //if (hunter.body.x > 300) {
-    // if (game.rnd.integerInRange(1, 200) === 1 && 
-    if (!bubbles.active)
+    if(game.rnd.integerInRange(1, 200) === 1) 
       spawnBubbles();
-    //}
-
-    if (curLevel === 2)
+    arrows.forEach(arrow => {
+      arrow.events.onInputDown.add(arrowClick, this);
+    });
+  
+    //if (curLevel === 2)
       moveCrocs();
     drawScore();
     drawLives();
-
-    if (bubbles.active)
-      moveBubbles();
-
+    arrows.forEach(arrow => {
+      arrow.visible = true;
+      arrow.x = arrow.width*.25+40+arrow.xOffset+game.camera.x;
+     });
+    moveBubbles();
     hunter.swimCount += 1;
     hunter.body.rotation = 30;
     // console.log(`${hunter.swimCount} ${hunter.frame}`);
@@ -155,105 +138,127 @@ function updateLevel2() {
 
 }
 
+function arrowClick(gameObject)
+{
+     switch (gameObject.name) {
+    case 'right':
+      console.log(gameObject.name);
+      hunter.body.velocity.x += 1;
+    break;
+    case 'left':
+      hunter.body.velocity.x -= 1;
+    break;
+    case 'up':
+      hunter.body.velocity.y -= 1;
+    break;
+    case 'down':
+      hunter.body.velocity.y += 1;
+      break;
+    default:
+      break;
+  } 
+  }
+
+
 function killObjects2() {
   level2bkgd1.destroy();
   level2bkgd2.destroy();
   level2bkgd3.destroy();
-  for (let index = 0; index < amountCrocs; index += 1) {
-    crocs[index].destroy();
-  }
+  crocs.forEach(croc => {
+    croc.destroy();
+  }); 
   for (let i = 0; i < MAX_AIR; i += 1) {
     air[i].destroy();
   }
   airLabel.destroy();
-  bubbles.destroy();
+  bubbles.forEach(bubble => {
+    bubble.destroy();
+  }); 
 }
 
 function moveCrocs() {
-  for (let index = 0; index < amountCrocs; index += 1) {
-    if (crocs[index].state === ALIVE) {
-      if (collisionTest(crocs[index], hunter)) {
-        //console.log(crocs[index].x, crocs[index].y, hunter.x, hunter.y);
+  crocs.forEach(croc => {
+      if (collisionTest(croc, hunter)) {
         if (hunter.frame === 6) {
-          crocs[index].visible = false;
-          crocs[index].state = DEAD;
           drawInfoText(
             '100',
-            crocs[index].x,
-            crocs[index].y,
+            croc.x,
+            croc.y,
             16,
             'rgb(255,255,255)',
             'Impact',
             2000,
           );
+          croc.destroy();
           curScore += 100;
           if (level2bkgd1.x > 0)
-            spawnCroc(index);
+            spawnCroc();
+            return;
         } else {
           currLives -= 1;
           showintro = 1;
           buildLevel2();
         }
       }
-      if (crocs[index].animations.currentAnim.frame === 3) {
-        crocs[index].animations.currentAnim.frame = 0;
+      if (croc.animations.currentAnim.frame === 3) {
+        croc.animations.currentAnim.frame = 0;
       }
-      if (crocs[index].animations.currentAnim.frame === 7) {
-        crocs[index].animations.currentAnim.frame = 4;
+      if (croc.animations.currentAnim.frame === 7) {
+        croc.animations.currentAnim.frame = 4;
       }
       const x = game.rnd.integerInRange(1, 5);
-      if (hunter.y > crocs[index].y && x === 1) {
-        crocs[index].y += 1;
-      } else if (hunter.y < crocs[index].y && x === 1) {
-        crocs[index].y -= 1;
+      if (hunter.y > croc.y && x === 1) {
+        croc.y += 1;
+      } else if (hunter.y < croc.y && x === 1) {
+        croc.y -= 1;
       }
-      crocs[index].x -= 1;
-      if (crocs[index].x < 0) {
-        crocs[index].x = game.width;
+      croc.x -= 1;
+      if (croc.x < 0) {
+        croc.x = game.width;
         const crocSize = game.rnd.integerInRange(50, 300);
-        crocs[index].y = game.height - crocSize;
+        croc.y = game.height - crocSize;
       }
-    }
-  }
+  }); 
 }
 
 function moveBubbles() {
-  bubbles.body.velocity.y = -25;
-  bubbles.body.velocity.x = -25;
-  if (bubbles.y < game.height / 2) {
-    bubbles.active = false;
-    bubbles.visible = false;
-  }
-  if (collisionTest(hunter, bubbles) && hunter.frame === 6) {
-    bubbles.active = false;
-    bubbles.visible = false;
-  }
+bubbles.children.forEach(bubble => {
+  bubble.body.velocity.y = -25;
+  bubble.body.velocity.x = -25;
+  if (bubble.y < game.height / 2) 
+    bubble.destroy();
+  if (collisionTest(hunter, bubbles) && hunter.frame === 6) 
+    bubble.destroy();
+});
 
 }
 
-function spawnCroc(index) {
-  crocs[index].reset(
-    game.width,
-    game.height - game.rnd.integerInRange(50, 300),
-  );
+function spawnCroc() {
+  var croc = game.add.sprite(0, 0, 'croc');
+  croc.anchor.setTo(0.5, 0.5);
+  croc.burnCount = 0;
+  croc.animations.add('bite');
+  croc.x = game.width
+  croc.y = game.height - game.rnd.integerInRange(50, 250);
   const x = game.rnd.integerInRange(1, 2);
   if (x === 1) {
-    crocs[index].frame = 0;
+    croc.frame = 0;
   } else {
-    crocs[index].frame = 4;
+    croc.frame = 4;
   }
-
-  crocs[index].animations.play('bite', 10, true);
-  crocs[index].state = ALIVE;
+croc.animations.play('bite', 10, true);
+crocs.add(croc);
 }
 
 function spawnBubbles() {
-  bubbles.reset(
-    game.width - game.rnd.integerInRange(50, 300),
-    game.height - 100,
-  );
-  bubbles.animations.play('bubble', 10, true);
-  bubbles.active = true;
+  var bubble = game.add.sprite(0, 0, 'bubbles');
+  bubble.animations.add('bubble');
+  game.physics.box2d.enable(bubble);
+
+  bubble.x =game.width - game.rnd.integerInRange(50, 300);
+  bubble.y =  game.height - 100;
+  bubble.animations.play('bubble', 10, true);
+  bubbles.add(bubble);
 }
 
 function breathe() {
@@ -282,7 +287,7 @@ function touchGround() {
   if (levelOver)
     return;
   hunter.frame = 0;
-  //  hunter.rotation = 170;
+  hunter.rotation = 170;
   hunter.body.velocity.x = JUMP_VELOCITY_X / 2;
   hunter.body.velocity.y = JUMP_VELOCITY_Y * 1.5;
   game.physics.box2d.gravity.y = 500;

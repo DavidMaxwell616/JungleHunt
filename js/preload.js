@@ -2,8 +2,8 @@ var loadText;
 var progress=0;
 function preload() {
    game.load.crossOrigin = 'anonymous';
-  game.scale.pageAlignHorizontally = true;
-  game.scale.pageAlignVertically = true;
+  // game.scale.pageAlignHorizontally = true;
+  // game.scale.pageAlignVertically = true;
   game.scale.refresh();
   
   game.load.onLoadStart.add(loadStart, this);
@@ -84,4 +84,5 @@ function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
 
 function loadComplete() {
   loadText.setText('Load Complete');
+  loadText.destroy();
 }

@@ -14,12 +14,6 @@ function createLevel3Stuff() {
   // level2bkgd1.height = game.height;
   level3bkgd3.visible = false;
 
-  for (let index = 0; index < MAX_ROCKS; index += 1) {
-    rocks[index] = game.add.sprite(0, 0, 'rock');
-    rocks[index].visible = false;
-    rocks[index].anchor.setTo(0.5, 0.5);
-    rocks[index].state = DEAD;
-  }
   bigRock = game.add.sprite(0, 0, 'rock');
   bigRock.visible = false;
   bigRock.anchor.setTo(0.5, 0.5);
@@ -45,9 +39,9 @@ function buildLevel3() {
     this,
   );
 
-  for (let index = 0; index < amountRocks; index += 1) {
-    rocks[index].reset(0, 0);
-  }
+  // for (let index = 0; index < amountRocks; index += 1) {
+  //   rocks[index].reset(0, 0);
+  // }
 
   bigRock.reset(1500, 200);
   bigRock.scale.setTo(7, 7);
@@ -59,14 +53,8 @@ function buildLevel3() {
 
 function updateLevel3() {
   if (hunter.x < 1190) {
-    for (let index = 0; index < amountRocks; index += 1) {
-      if (
-        game.rnd.integerInRange(1, 200) === 1 &&
-        rocks[index].state === DEAD
-      ) {
-        spawnRock(index);
-      }
-    }
+      if (game.rnd.integerInRange(1, 200) === 1) 
+        spawnRock();
 
     if (hunter.x < 20) {
       currLives -= 1;
@@ -126,33 +114,28 @@ function killObjects3() {
   bigRock.destroy();
 }
 
-function spawnRock(index) {
-  rocks[index].reset(game.width + game.camera.x, game.height / 2);
-  rocks[index].state = ALIVE;
+function spawnRock() {
+  var rock = game.add.sprite(0, 0, 'rock');
+  rock.anchor.setTo(0.5, 0.5);
+  rock.x = game.width + game.camera.x;
+  rock.y =game.height / 2;
   const rand = game.rnd.realInRange(1, 3);
-  rocks[index].scale.setTo(rand, rand);
-  game.physics.box2d.enable(rocks[index]);
-  rocks[index].body.velocity.x = -20;
-  rocks[index].body.restitution = 0.7;
+  rock.scale.setTo(rand, rand);
+  game.physics.box2d.enable(rock);
+  rock.body.velocity.x = -20;
+  rock.body.restitution = 0.7;
+  rocks.add(rock);
 }
 
 function moveRocks() {
-  for (let index = 0; index < amountRocks; index += 1) {
-    if (rocks[index].state === ALIVE) {
-      // if (collisionTest(rocks[index], hunter)) {
-      //        currLives -= 1;
-      //        hunter.state = DEAD;
-      //        hunter.visible = false;
-      // }
-      rocks[index].rotation -= 60;
+rocks.forEach(rock => {
+      rock.rotation -= 60;
       if (game.rnd.integerInRange(1, 200) === 1) {
-        rocks[index].body.velocity.y = -200;
+        rock.body.velocity.y = -200;
       }
-      // console.log(`${index} - ${rocks[index].body.mass} - ${rocks[index].width}`);
-      if (rocks[index].x < game.camera.x) {
+      if (rock.x < game.camera.x) {
         curScore += 100;
-        spawnRock(index);
+        spawnRock();
       }
-    }
-  }
+});
 }

@@ -2,6 +2,7 @@ const game = new Phaser.Game(800, 480, Phaser.BOX2D, 'game', {
   preload,
   create,
   update,
+  render,
 });
 
 function create() {
@@ -26,10 +27,13 @@ function gameCreate() {
   game.physics.box2d.restitution = 0.1;
   game.physics.box2d.debugDraw.joints = true;
 
-  createLevel1Stuff();
+  //createLevel1Stuff();
 
-  createLevel2Stuff();
+  // crocs = game.add.group();
+  // bubbles = game.add.group();
+  // createLevel2Stuff();
 
+  rocks = game.add.group();
   createLevel3Stuff();
 
   createLevel4Stuff();
@@ -273,8 +277,8 @@ function drawText(x, y, str) {
 }
 
 function render() {
-   if (level4bkgd1 != null){
-    game.debug.body(level4bkgd1);
+   if (level3bkgd1 != null){
+    game.debug.body(level3bkgd1);
   game.debug.box2dWorld();
    }
   // if (hunter != null)
