@@ -1,74 +1,63 @@
 function createLevel3Stuff() {
   level3bkgd1 = game.add.sprite(0, 0, 'level 3 layer1');
-  level3bkgd1.width = game.width * 3.4;
+  level3bkgd1.width = game.width * 3.5;
   level3bkgd1.visible = false;
-  // level2bkgd3.height = game.height;
-
+  
   level3bkgd2 = game.add.image(0, 0, 'level 3 layer2');
   level3bkgd2.width = game.width * 3;
-  // level2bkgd1.height = game.height;
   level3bkgd2.visible = false;
 
   level3bkgd3 = game.add.image(0, 0, 'level 3 layer3');
   level3bkgd3.width = game.width * 3;
-  // level2bkgd1.height = game.height;
   level3bkgd3.visible = false;
 
   bigRock = game.add.sprite(0, 0, 'rock');
   bigRock.visible = false;
   bigRock.anchor.setTo(0.5, 0.5);
-  bigRock.state = DEAD;
 }
 
 function buildLevel3() {
   amountRocks = curLevel;
   game.stage.backgroundColor = '#008ADA';
-
-  level3bkgd1.reset(0, game.height * 0.95);
   level3bkgd2.reset(0, 0);
   level3bkgd3.reset(0, 0);
-  hunter.reset(145, 500);
-  hunter.frame = 7;
+  //level3bkgd1.anchor.y=1;
+ 
+  level3bkgd1.reset(0, game.height+level3bkgd1.height/2-20);
   game.physics.box2d.enable(level3bkgd1);
+  level3bkgd1.body.rotation = 25;
   level3bkgd1.body.static = true;
-  level3bkgd1.body.clearFixtures();
-  level3bkgd1.body.loadPolygon('physicsData', 'hill', level3bkgd1);
-  hunter.body.setBodyContactCallback(
-    level3bkgd1.body,
-    onGroundCallback,
-    this,
-  );
+  //level3bkgd1.body.clearFixtures();
+  //level3bkgd1.body.loadPolygon('physicsData', 'hill', level3bkgd1);
+  // // hunter.body.setBodyContactCallback(
+  //   level3bkgd1.body,
+  //   onGroundCallback,
+  //   this,
+  // );
 
-  // for (let index = 0; index < amountRocks; index += 1) {
-  //   rocks[index].reset(0, 0);
-  // }
-
-  bigRock.reset(1500, 200);
-  bigRock.scale.setTo(7, 7);
-  game.physics.box2d.enable(bigRock);
-
-  levelWidth = game.width * 2;
+  hunter.reset(145, 400);
+  hunter.frame = 7;
+  hunter.body.friction = 0;
+    levelWidth = game.width * 2;
   levelHeight = game.height;
 }
 
 function updateLevel3() {
   if (hunter.x < 1190) {
-      if (game.rnd.integerInRange(1, 200) === 1) 
+     if (game.rnd.integerInRange(1, 2000) === 1) 
         spawnRock();
-
+  }
     if (hunter.x < 20) {
-      currLives -= 1;
-      showintro = 1;
-      buildLevel3();
+      hunter.body.x = 20;
     }
-
+    
     moveRocks();
     drawScore();
-    drawLives();
+    drawLives();  
     hunter.body.rotation = 0;
-    level3bkgd2.x = game.camera.x * 0.05;
     game.camera.follow(hunter);
-
+   level3bkgd2.x = game.camera.x * 0.05;
+ 
     hunter.rotation.toFixed();
     if (game.cursors.right.isDown) {
       hunter.body.velocity.x += 3;
@@ -88,7 +77,7 @@ function updateLevel3() {
     if (hunter.frame > 9) {
       hunter.frame = 7;
     }
-  } else {
+ 
     if (!hunter.isJumping) {
       hunter.body.velocity.y = -500;
       if (hunter.body.velocity.x < 50)
@@ -103,8 +92,6 @@ function updateLevel3() {
       buildLevel();
     }
   }
-
-}
 
 function killObjects3() {
   for (let index = 0; index < amountRocks; index += 1) {
@@ -130,12 +117,14 @@ function spawnRock() {
 function moveRocks() {
 rocks.forEach(rock => {
       rock.rotation -= 60;
-      if (game.rnd.integerInRange(1, 200) === 1) {
+      if (game.rnd.integerInRange(1, 500) === 1) {
         rock.body.velocity.y = -200;
       }
-      if (rock.x < game.camera.x) {
+      const rockRadius = rock.width/2;
+      if (rock.x-rockRadius < game.camera.x+rockRadius) {
         curScore += 100;
-        spawnRock();
+        rock.destroy();
+      //  spawnRock();
       }
 });
 }

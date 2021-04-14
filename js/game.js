@@ -27,7 +27,7 @@ function gameCreate() {
   game.physics.box2d.restitution = 0.1;
   game.physics.box2d.debugDraw.joints = true;
 
-  //createLevel1Stuff();
+  createLevel1Stuff();
 
   // crocs = game.add.group();
   // bubbles = game.add.group();
@@ -36,7 +36,7 @@ function gameCreate() {
   rocks = game.add.group();
   createLevel3Stuff();
 
-  createLevel4Stuff();
+  //createLevel4Stuff();
 
   hunter = game.add.sprite(0, 0, 'hunter');
   game.physics.box2d.enable(hunter);
@@ -178,7 +178,7 @@ function update() {
     mainMenuUpdate();
     return;
   }
-  if (currLives === 0) {
+  if (currLives === 0 && !gameOver) {
     gameOver = true;
     // draw text
     drawInfoText(
@@ -251,10 +251,6 @@ function drawLives() {
   }
 }
 
-// function drawLevel() {
-//   drawText(850, 20, `LEVEL ${`00${curLevel}`.slice(-3)}`, 20);
-// }
-
 function drawText(x, y, str) {
   let newX = x;
   const text = str.toUpperCase();
@@ -280,7 +276,10 @@ function render() {
    if (level3bkgd1 != null){
     game.debug.body(level3bkgd1);
   game.debug.box2dWorld();
-   }
+  var bodies = game.physics.box2d.getBodies();
+  bodies.forEach(element => {
+ });
+}
   // if (hunter != null)
   //   game.debug.body(hunter);
   // for (let index = 0; index < amountCrocs; index += 1) {

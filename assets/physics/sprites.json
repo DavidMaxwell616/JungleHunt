@@ -20,27 +20,6 @@
       "shape": [80, 222, 200, 222, 200, 280, 80,280]
     }
   ],
-  "hill": [{
-      "density": 2,
-      "friction": 0,
-      "bounce": 0,
-      "filter": {
-        "categoryBits": 1,
-        "maskBits": 65535
-      },
-      "shape": [0, 700, 3000, 120, 3000, 700, 0, 700]
-    },
-    {
-      "density": 2,
-      "friction": 0,
-      "bounce": 0,
-      "filter": {
-        "categoryBits": 1,
-        "maskBits": 65535
-      },
-      "shape": [3000, 120, 3400, 120, 3400, 700, 3000, 700]
-    }
-  ],
   "ground": [{
       "density": 2,
       "friction": 0,

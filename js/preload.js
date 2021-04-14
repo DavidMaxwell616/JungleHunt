@@ -2,8 +2,6 @@ var loadText;
 var progress=0;
 function preload() {
    game.load.crossOrigin = 'anonymous';
-  // game.scale.pageAlignHorizontally = true;
-  // game.scale.pageAlignVertically = true;
   game.scale.refresh();
   
   game.load.onLoadStart.add(loadStart, this);
@@ -66,7 +64,7 @@ function preload() {
   game.load.image('maxxdaddy', 'assets/images/maxxdaddy.gif');
   game.load.spritesheet('tribesman', 'assets/images/tribesman.png', 40, 90);
   game.load.spritesheet('cauldron', 'assets/images/cauldron.png', 71, 70);
-  game.load.spritesheet('girl', 'assets/images/girl.png');
+  game.load.spritesheet('girl', 'assets/images/girl.png',40,64);
   game.load.image('crocKill', 'assets/images/crocKill.png');
   game.load.image('airLabel', 'assets/images/airLabel.png');
   game.load.spritesheet('air', 'assets/images/airCount.png', 16, 16);
