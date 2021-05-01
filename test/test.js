@@ -15,14 +15,14 @@ function preload() {
 }
 
 function create() {
-  for (let index = 0; index < MAX_AIR; index += 1) {
+  for (let index = 0; index < MAX_AIR; index++) {
     air[index] = game.add.sprite(0, 0, 'air');
     air[index].visible = false;
     air[index].anchor.setTo(0.5, 0.5);
     const breath = air[index].animations.add('breathe');
     breath.onComplete.add(takeBreath, this);
   }
-  for (let i = 0; i < MAX_AIR; i += 1) {
+  for (let i = 0; i < MAX_AIR; i++) {
     air[i].reset(game.width * 0.85 + i * 16, 100);
   }
 }
@@ -34,7 +34,7 @@ function breathe() {
 
 function resetAir() {
   airLeftBlock = MAX_AIR - 1;
-  for (let i = 0; i < MAX_AIR; i += 1) {
+  for (let i = 0; i < MAX_AIR; i++) {
     //console.log(air[i].animations.currentFrame);
     air[i].frame = 0;
   }
@@ -53,7 +53,7 @@ function update() {
   // if (hunter_body_y > 320) breathe();
   // else {
   //   air[airLeftBlock] = MAX_AIR - 1;
-  //   for (let i = 0; i < MAX_AIR; i += 1) {
+  //   for (let i = 0; i < MAX_AIR; i++) {
   //     air[i].animations.currentAnim.stop();
   //     air[i].animations.currentFrame = 0;
   //   }

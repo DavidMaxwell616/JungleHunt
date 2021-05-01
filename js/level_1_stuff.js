@@ -14,7 +14,7 @@ function createLevel1Stuff() {
   level1bkgd2.height = game.height;
   level1bkgd2.visible = false;
 if(curLevel>1)
-{  for (let index = 0; index < MAX_MONKEYS; index += 1) {
+{  for (let index = 0; index < MAX_MONKEYS; index++) {
     monkeys[index] = game.add.sprite(0, 0, 'monkey');
     game.physics.box2d.enable(monkeys[index]);
     monkeys[index].visible = false;
@@ -36,7 +36,7 @@ function buildLevel1() {
   hunter.anchor.set(0.5, 0.5);
   hunter.body.velocity.x = 0;
   hunter.body.velocity.y = 0;
-  hunter.body.mass = 60;
+  hunter.body.mass = 20;
   hunter.frame = 0;
   hunter.swimCount = 0;
   falling = false;
@@ -50,7 +50,7 @@ function buildLevel1() {
   level1bkgd3.reset(0, 0);
   level1bkgd2.reset(0, 0);
   killVines();
-  for (let i = 0; i < NUM_VINES; i += 1) {
+  for (let i = 0; i < NUM_VINES; i ++) {
     vines[i] = createVines(
       i,
       NUM_VINE_SEGMENTS,
@@ -62,6 +62,9 @@ function buildLevel1() {
   spawnMonkeys();
   levelWidth = game.width * 3;
   levelHeight = game.height;
+  lives.forEach(element => {
+    element.visible = true;
+  });
 }
 
 function spawnMonkeys() {
@@ -85,12 +88,12 @@ function updateLevel1() {
 
   if (overWater && hunter.y < 500) {
     // hunter.frame = 3;
-    hunter.body.rotation += 15;
+    hunter.body.rotation+=15;
   }
   if (onGround) {
     showintro = 1;
     if (overWater) {
-      curLevel += 1;
+      curLevel++;
       killObjects1();
     } else currLives -= 1;
     overWater = false;
@@ -111,7 +114,7 @@ function updateLevel1() {
   }
   if (game.cursors.right.isDown && hunterOnRope) {
     if (hunter.body.velocity.x > 0) {
-      hunter.body.velocity.x += 10;
+      hunter.body.velocity.x+=10;
     }
   }
   if (game.cursors.left.isDown && hunterOnRope) {
@@ -138,7 +141,7 @@ function updateLevel1() {
         JUMP_VELOCITY_X + 70;
       hunter.body.velocity.x = jumpSpeed;
       hunter.body.velocity.y = JUMP_VELOCITY_Y;
-      curVine += 1;
+      curVine++;
       isJumping = true;
       readyToJump = false;
     }
@@ -154,7 +157,7 @@ function updateLevel1() {
     if (vineSegment.sprite.name < curVine + 1) {
       j = game.physics.box2d.revoluteJoint(hunter, vineSegment);
     }
-    curScore += 100;
+    curScore+=100;
     // console.log(vineSegment.sprite.name);
     // hunter.body.x = vines[0,vineSegment].body.x;
     // hunter.body.velocity.y = vines[0,vineSegment].body.y;
@@ -172,7 +175,7 @@ function arrowClick(gameObject)
       }
       if (hunterOnRope) {
         if (hunter.body.velocity.x > 0) {
-          hunter.body.velocity.x += 10;
+          hunter.body.velocity.x+=10;
         }
       }
     break;
@@ -213,7 +216,7 @@ function createVines(vineNum, length, name, xAnchor, yAnchor) {
   // const maxForce = 50000; // the force that holds the rectangles together
   const vineSegments = [];
 
-  for (let i = 0; i < length; i += 1) {
+  for (let i = 0; i < length; i++) {
     const x = xAnchor;
     const y = yAnchor + i * height;
     vineSegments[i] = game.add.sprite(x, y, name, 0);
@@ -254,10 +257,10 @@ function createVines(vineNum, length, name, xAnchor, yAnchor) {
 }
 
 function killVines() {
-  for (let i = 0; i < NUM_VINES; i += 1) {
+  for (let i = 0; i < NUM_VINES; i++) {
     const arr = vines[i];
     if (arr != null) {
-      for (let index = 0; index < arr.length; index += 1) {
+      for (let index = 0; index < arr.length; index++) {
         arr[index].destroy();
       }
     }
@@ -267,10 +270,10 @@ function killVines() {
 // This function will be triggered when the ship begins or ends touching the enemy.
 // This callback is also called for EndContact events.
 function vineCallback(body1, body2, fixture1, fixture2, begin) {
-  if (!begin) {
+  if (!begin || hunter.body.rotation!=0) {
     return;
   }
   vineSegment = body2;
   hunter.frame = 1;
-  hunterOnRope = true;
+   hunterOnRope = true;
 }

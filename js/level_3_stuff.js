@@ -71,7 +71,7 @@ function updateLevel3() {
       hunter.body.velocity.y = 0;
     }
     if (game.time.now > runTime) {
-      hunter.frame += 1;
+      hunter.frame++;
       runTime = game.time.now + 150;
     }
     if (hunter.frame > 9) {
@@ -87,14 +87,14 @@ function updateLevel3() {
     game.camera.target = null;
     if (hunter.x > 1600) {
       showintro = 1;
-      curLevel += 1;
+      curLevel++;
       killObjects3();
       buildLevel();
     }
   }
 
 function killObjects3() {
-  for (let index = 0; index < amountRocks; index += 1) {
+  for (let index = 0; index < amountRocks; index++) {
     rocks[index].destroy();
   }
   level3bkgd1.destroy();
@@ -122,7 +122,7 @@ rocks.forEach(rock => {
       }
       const rockRadius = rock.width/2;
       if (rock.x-rockRadius < game.camera.x+rockRadius) {
-        curScore += 100;
+        curScore+=100;
         rock.destroy();
       //  spawnRock();
       }

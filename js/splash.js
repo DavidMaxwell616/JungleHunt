@@ -27,26 +27,26 @@ function mainMenuShowSplash() {
   switch (phase) {
     case 0:
       splash2.visible = true;
-      splashPhase += 1;
+      splashPhase++;
       break;
     case 1:
       splash3.visible = true;
-      splashPhase += 1;
+      splashPhase++;
       break;
     case 2:
       splash4.visible = true;
-      splashPhase += 1;
+      splashPhase++;
       break;
     case 3:
       splash5.visible = true;
-      splashPhase += 1;
+      splashPhase++;
       break;
     case 4:
       splash2.visible = false;
       splash3.visible = false;
       splash4.visible = false;
       splash5.visible = false;
-      splashPhase += 1;
+      splashPhase++;
       break;
     default:
       break;
@@ -55,7 +55,7 @@ function mainMenuShowSplash() {
 }
 
 function mainMenuUpdate() {
-  splashTick += 1;
+  splashTick++;
   if (splashTick > 50) {
     mainMenuShowSplash();
     splashTick = 0;

@@ -67,6 +67,7 @@ function preload() {
   game.load.spritesheet('girl', 'assets/images/girl.png',40,64);
   game.load.image('crocKill', 'assets/images/crocKill.png');
   game.load.image('airLabel', 'assets/images/airLabel.png');
+  game.load.image('life', 'assets/images/life.png');
   game.load.spritesheet('air', 'assets/images/airCount.png', 16, 16);
   game.load.spritesheet('bubbles', 'assets/images/bubbles.png', 37, 33);
   game.load.spritesheet('monkey', 'assets/images/monkeys.png', 51, 100);

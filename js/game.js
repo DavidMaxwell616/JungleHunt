@@ -29,14 +29,14 @@ function gameCreate() {
 
   createLevel1Stuff();
 
-  // crocs = game.add.group();
-  // bubbles = game.add.group();
-  // createLevel2Stuff();
+  crocs = game.add.group();
+  bubbles = game.add.group();
+  createLevel2Stuff();
 
   rocks = game.add.group();
   createLevel3Stuff();
 
-  //createLevel4Stuff();
+  createLevel4Stuff();
 
   hunter = game.add.sprite(0, 0, 'hunter');
   game.physics.box2d.enable(hunter);
@@ -45,6 +45,13 @@ function gameCreate() {
   textTiles = game.add.group();
   textTiles.createMultiple(150, 'text');
   textTiles.callAll('anchor.setTo', 'anchor', 0.5, 0.5);
+
+  for (let index = 0; index < 3; index++) {
+    var man = game.add.sprite(0, 0, 'life'); 
+    man.anchor.setTo(0.5, 0.5);
+    lives.push(man);
+  }
+  
   setUpArrows();
  
   game.input.onDown.add(function(){mouseDown=true;}, this);
@@ -238,23 +245,19 @@ function drawScore() {
 }
 
 function drawLives() {
-  let x = game.width + game.camera.x - 90;
-  const y = game.height - 20;
-  for (let i = 0; i < currLives; i += 1) {
-    const letter = textTiles.children[i + 20];
-    letter.x = x;
-    letter.y = y;
-    letter.alive = true;
-    letter.visible = true;
-    letter.frame = 4;
-    x += 32;
+let offsetX = game.camera.x + 700;
+const y = game.height - 20;
+ for (let i = 0; i < lives.length; i++) {
+    lives[i].x = offsetX+(32*i);
+    lives[i].y = y;
+    lives[i].visible = i<=currLives-1;
   }
 }
 
 function drawText(x, y, str) {
   let newX = x;
   const text = str.toUpperCase();
-  for (let i = 0; i < text.length; i += 1) {
+  for (let i = 0; i < text.length; i++) {
     const code = text.charAt(i);
     const frame = textFrames[code];
     const letter = textTiles.children[i];
@@ -273,17 +276,17 @@ function drawText(x, y, str) {
 }
 
 function render() {
-   if (level3bkgd1 != null){
-    game.debug.body(level3bkgd1);
-  game.debug.box2dWorld();
-  var bodies = game.physics.box2d.getBodies();
-  bodies.forEach(element => {
- });
+//    if (level3bkgd1 != null){
+//     game.debug.body(level3bkgd1);
+//   game.debug.box2dWorld();
+//   var bodies = game.physics.box2d.getBodies();
+//   bodies.forEach(element => {
+//  });
 }
   // if (hunter != null)
   //   game.debug.body(hunter);
-  // for (let index = 0; index < amountCrocs; index += 1) {
+  // for (let index = 0; index < amountCrocs; index++) {
   //   var rect = new Phaser.Rectangle(crocs[index].x - (crocs[index].width / 2), crocs[index].y - (crocs[index].height / 2), crocs[index].width, crocs[index].height);
   //   game.debug.geom(rect, 'rgba(255,0,0,.5)');
   // }
-}
+//}

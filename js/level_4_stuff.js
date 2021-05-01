@@ -11,7 +11,7 @@ function createLevel4Stuff() {
   girl = game.add.sprite(0, 0, 'girl');
   girl.visible = false;
 
-  for (let index = 0; index < MAX_TRIBESMEN; index += 1) {
+  for (let index = 0; index < MAX_TRIBESMEN; index++) {
     tribesmen[index] = game.add.sprite(0, 0, 'tribesman');
     tribesmen[index].visible = false;
     tribesmen[index].anchor.setTo(0.5, 0.5);
@@ -64,7 +64,7 @@ function updateLevel4() {
 
   if (levelOver) {
     j2 = game.physics.box2d.revoluteJoint(hunter, girl);
-    levelOverTimer += 1;
+    levelOverTimer++;
   }
 
   drawScore();
@@ -75,7 +75,7 @@ function updateLevel4() {
   if (levelOverTimer > 100) {
     drawInfoText('YOU GOT THE GIRL!', 520, 100, 32, 'rgb(255,255,0)', 'Impact', 5000);
     showintro = 1;
-    curLevel += 1;
+    curLevel++;
     curScore += 500;
     killObjects4();
     buildLevel();
@@ -95,7 +95,7 @@ function updateLevel4() {
     hunter.body.velocity.y = 0;
   }
   if (game.time.now > runTime && !levelOver) {
-    hunter.frame += 1;
+    hunter.frame++;
     runTime = game.time.now + 150;
   }
   if (hunter.frame > 12) {
@@ -108,7 +108,7 @@ function killObjects4() {
   level4bkgd1.destroy();
   cauldron.destroy();
   girl.destroy();
-  for (let index = 0; index < MAX_TRIBESMEN; index += 1) {
+  for (let index = 0; index < MAX_TRIBESMEN; index++) {
     tribesmen[index].destroy();
   }
 }
@@ -122,7 +122,7 @@ function kiss() {
 }
 
 function spawnTribesmen() {
-  for (let index = 0; index < MAX_TRIBESMEN; index += 1) {
+  for (let index = 0; index < MAX_TRIBESMEN; index++) {
     tribesmen[index].reset((index + 1) * 200, 520);
     tribesmen[index].animations.play('dance', 10, true);
     tribesmen[index].state = ALIVE;
@@ -132,7 +132,7 @@ function spawnTribesmen() {
 }
 
 function moveTribesmen() {
-  for (let index = 0; index < MAX_TRIBESMEN; index += 1) {
+  for (let index = 0; index < MAX_TRIBESMEN; index++) {
     tribesmen[index].x += tribesmen[index].walkingSpeed;
     if (tribesmen[index].x < 10 || tribesmen[index].x > 450) {
       tribesmen[index].walkingSpeed *= -1;

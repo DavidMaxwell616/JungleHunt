@@ -13,7 +13,7 @@ function createLevel2Stuff() {
   level2bkgd1.width = game.width * 3.4;
   level2bkgd1.visible = false;
 
-  for (let index = 0; index < MAX_AIR; index += 1) {
+  for (let index = 0; index < MAX_AIR; index++) {
     air[index] = game.add.sprite(0, 0, 'air');
     air[index].visible = false;
     air[index].anchor.setTo(0.5, 0.5);
@@ -27,7 +27,7 @@ function createLevel2Stuff() {
 }
 
 function buildLevel2() {
-  for (let i = 0; i < MAX_AIR; i += 1) {
+  for (let i = 0; i < MAX_AIR; i++) {
     air[i].reset(game.width * 0.85 + i * 16, 100);
     //console.log(i, air[i]);
   }
@@ -42,7 +42,7 @@ function buildLevel2() {
   level2bkgd1.visible = true;
   level2bkgd1.body.clearFixtures();
   level2bkgd1.body.loadPolygon('physicsData', 'riverBed', level2bkgd1);
-  level2bkgd1.body.x += 1600;
+  level2bkgd1.body.x+=1600;
   level2bkgd1.body.friction = 1;
   hunter.reset(145, 350);
   hunter.swimCount = 0;
@@ -72,12 +72,12 @@ function updateLevel2() {
     if (levelOver && levelOverTimer < 60) {
       {
         hunter.rotation = 90;
-        levelOverTimer += 1;
+        levelOverTimer++;
       }
     } else if (levelOver) {
       levelOver = false
       showintro = 1;
-      curLevel += 1;
+      curLevel++;
       levelOverTimer = 0;
       killObjects2();
       buildLevel();
@@ -98,7 +98,7 @@ function updateLevel2() {
       arrow.x = arrow.width*.25+40+arrow.xOffset+game.camera.x;
      });
     moveBubbles();
-    hunter.swimCount += 1;
+    hunter.swimCount++;
     hunter.body.rotation = 30;
     // console.log(`${hunter.swimCount} ${hunter.frame}`);
 
@@ -119,11 +119,11 @@ function updateLevel2() {
     if (hunter.x > game.width * .7 && !levelOver)
       hunter.body.velocity.x = 0;
     if (game.cursors.right.isDown && hunter.x < game.width / 2) {
-      hunter.body.velocity.x += 1;
+      hunter.body.velocity.x++;
     } else if (game.cursors.left.isDown && hunter.x > 20) {
       hunter.body.velocity.x -= 1;
     } else if (game.cursors.down.isDown && hunter.y < game.height) {
-      hunter.body.velocity.y += 1;
+      hunter.body.velocity.y++;
     } else if (game.cursors.up.isDown && hunter.y > game.height / 2) {
       hunter.body.velocity.y -= 1;
     } else if (game.fireButton.isDown) {
@@ -143,7 +143,7 @@ function arrowClick(gameObject)
      switch (gameObject.name) {
     case 'right':
       console.log(gameObject.name);
-      hunter.body.velocity.x += 1;
+      hunter.body.velocity.x++;
     break;
     case 'left':
       hunter.body.velocity.x -= 1;
@@ -152,7 +152,7 @@ function arrowClick(gameObject)
       hunter.body.velocity.y -= 1;
     break;
     case 'down':
-      hunter.body.velocity.y += 1;
+      hunter.body.velocity.y++;
       break;
     default:
       break;
@@ -167,7 +167,7 @@ function killObjects2() {
   crocs.forEach(croc => {
     croc.destroy();
   }); 
-  for (let i = 0; i < MAX_AIR; i += 1) {
+  for (let i = 0; i < MAX_AIR; i++) {
     air[i].destroy();
   }
   airLabel.destroy();
@@ -190,7 +190,7 @@ function moveCrocs() {
             2000,
           );
           croc.destroy();
-          curScore += 100;
+          curScore+=100;
           if (level2bkgd1.x > 0)
             spawnCroc();
             return;
@@ -208,7 +208,7 @@ function moveCrocs() {
       }
       const x = game.rnd.integerInRange(1, 5);
       if (hunter.y > croc.y && x === 1) {
-        croc.y += 1;
+        croc.y++;
       } else if (hunter.y < croc.y && x === 1) {
         croc.y -= 1;
       }
@@ -278,7 +278,7 @@ function takeBreath() {
 
 function resetAir() {
   airLeftBlock = MAX_AIR - 1;
-  for (let i = 0; i < MAX_AIR; i += 1) {
+  for (let i = 0; i < MAX_AIR; i++) {
     air[i].frame = 0;
   }
 }
