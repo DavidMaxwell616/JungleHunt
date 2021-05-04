@@ -61,7 +61,7 @@ function updateLevel2() {
   game.world.bringToTop(crocs);
     if (
         game.rnd.integerInRange(1, 200) === 1 &&
-        crocs.children.length<MAX_CROCS &&
+        crocs.children.length<maxCrocs &&
         level2bkgd1.x > 0
       ) {
         spawnCroc();

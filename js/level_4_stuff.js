@@ -11,7 +11,7 @@ function createLevel4Stuff() {
   girl = game.add.sprite(0, 0, 'girl');
   girl.visible = false;
 
-  for (let index = 0; index < MAX_TRIBESMEN; index++) {
+  for (let index = 0; index < maxTribesmen; index++) {
     tribesmen[index] = game.add.sprite(0, 0, 'tribesman');
     tribesmen[index].visible = false;
     tribesmen[index].anchor.setTo(0.5, 0.5);

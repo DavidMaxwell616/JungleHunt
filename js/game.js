@@ -121,7 +121,8 @@ function drawInfoText(text, x, y, size, color, font, delay) {
   });
   infoText.updateText();
   // infoText.anchor.setTo(0.5, 0.5);
-  textTimer = game.time.events.add(delay, infoText.destroy, infoText);
+ if(delay>0) 
+    textTimer = game.time.events.add(delay, infoText.destroy, infoText);
   infoText.anchor.setTo(0.5);
 }
 
@@ -189,31 +190,28 @@ function update() {
     gameOver = true;
     // draw text
     drawInfoText(
-      'G A M E    O V E R',
+      '         G A M E    O V E R \n\n Press spacebar play again',
       520,
       200,
       32,
       'rgb(255,0,0)',
       'Impact',
-      1000,
+      0,
     );
-    drawInfoText(
-      'Press spacebar play again',
-      520,
-      280,
-      32,
-      'rgb(255,0,0)',
-      'Impact',
-      1000,
-    );
+  } // end if
+  if(gameOver){
     if (game.fireButton.isDown) {
+      console.log('restart game');
       currLives = 3;
       gameOver = false;
       curLevel = 1;
       curScore = 0;
-    }
-    return;
-  } // end if
+      infoText.destroy();
+      lives.forEach(element => {
+        element.visible = true;
+      });
+     }
+  }
 
   const level = curLevel % 4 === 0 ? 4 : curLevel % 4;
 
