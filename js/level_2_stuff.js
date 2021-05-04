@@ -76,7 +76,7 @@ function updateLevel2() {
       }
     } else if (levelOver) {
       levelOver = false
-      showintro = 1;
+      showintro = true;
       curLevel++;
       levelOverTimer = 0;
       killObjects2();
@@ -196,7 +196,7 @@ function moveCrocs() {
             return;
         } else {
           currLives -= 1;
-          showintro = 1;
+          showintro = true;
           buildLevel2();
         }
       }
@@ -270,7 +270,7 @@ function takeBreath() {
   if (airLeftBlock > 0) airLeftBlock -= 1;
   else {
     currLives -= 1;
-    showintro = 1;
+    showintro = true;
     resetAir();
     buildLevel2();
   }

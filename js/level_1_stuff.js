@@ -45,7 +45,7 @@ function buildLevel1() {
   readyToJump = false;
   isJumping = false;
   hunterOnRope = false;
-  showintro = 1;
+  showintro = true;
   overWater = false;
   onGround = false;
   tree.reset(80, 310);
@@ -91,7 +91,7 @@ function updateLevel1() {
     hunter.body.rotation+=15;
   }
   if (onGround) {
-    showintro = 1;
+    showintro = true;
     if (overWater) {
       curLevel++;
       killObjects1();

@@ -74,7 +74,7 @@ function updateLevel4() {
 
   if (levelOverTimer > 100) {
     drawInfoText('YOU GOT THE GIRL!', 520, 100, 32, 'rgb(255,255,0)', 'Impact', 5000);
-    showintro = 1;
+    showintro = true;
     curLevel++;
     curScore += 500;
     killObjects4();

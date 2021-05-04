@@ -148,9 +148,9 @@ function buildLevel() {
   game.world.setBounds(0, 0, levelWidth, levelHeight);
   game.camera.follow(hunter);
 
-  if (showintro === 1 && currLives > 0) {
+  if (showIntro && currLives > 0) {
     doIntro();
-    showintro = 0;
+    showIntro = false;
   }
 }
 
@@ -210,7 +210,8 @@ function update() {
       lives.forEach(element => {
         element.visible = true;
       });
-     }
+      doIntro();
+    }
   }
 
   const level = curLevel % 4 === 0 ? 4 : curLevel % 4;

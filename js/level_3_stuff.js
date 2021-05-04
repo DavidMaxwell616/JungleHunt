@@ -86,7 +86,7 @@ function updateLevel3() {
     hunter.isJumping = true;
     game.camera.target = null;
     if (hunter.x > 1600) {
-      showintro = 1;
+      showintro = true;
       curLevel++;
       killObjects3();
       buildLevel();
