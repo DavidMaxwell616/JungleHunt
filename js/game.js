@@ -26,7 +26,7 @@ function gameCreate() {
   game.physics.box2d.friction = 1;
   game.physics.box2d.restitution = 0.1;
   game.physics.box2d.debugDraw.joints = true;
-
+ 
   createLevel1Stuff();
 
   crocs = game.add.group();
@@ -51,8 +51,7 @@ function gameCreate() {
     man.anchor.setTo(0.5, 0.5);
     lives.push(man);
   }
-  
-  setUpArrows();
+    setUpArrows();
  
   game.input.onDown.add(function(){mouseDown=true;}, this);
   game.input.onUp.add(function(){arrowDown=false;mouseDown=false;}, this);
@@ -179,7 +178,6 @@ function collisionTest(object1, object2) {
   }
   return false;
 } // end collisionTest
-// //////////////////////////////////////////////////////////
 
 function update() {
   if (!startGame) {
@@ -275,17 +273,21 @@ function drawText(x, y, str) {
 }
 
 function render() {
+ if(level2bkgd1!=null)
+  game.debug.body(level2bkgd1);
 //    if (level3bkgd1 != null){
 //     game.debug.body(level3bkgd1);
-//   game.debug.box2dWorld();
-//   var bodies = game.physics.box2d.getBodies();
+//     game.debug.box2dWorld();
+//console.log(game.debug); 
+
+//var bodies = game.physics.box2d.getBodies();
 //   bodies.forEach(element => {
 //  });
-}
+//}
   // if (hunter != null)
   //   game.debug.body(hunter);
   // for (let index = 0; index < amountCrocs; index++) {
   //   var rect = new Phaser.Rectangle(crocs[index].x - (crocs[index].width / 2), crocs[index].y - (crocs[index].height / 2), crocs[index].width, crocs[index].height);
   //   game.debug.geom(rect, 'rgba(255,0,0,.5)');
   // }
-//}
+}

@@ -1,16 +1,16 @@
 function createLevel2Stuff() {
   level2bkgd2 = game.add.image(0, 0, 'level 2 layer2');
-  level2bkgd2.width = game.width * 3.4;
+  level2bkgd2.width = game.width * 3.5;
   level2bkgd2.height = game.height * 0.7;
   level2bkgd2.visible = false;
 
   level2bkgd3 = game.add.image(0, 0, 'level 2 layer3');
-  level2bkgd3.width = game.width * 3.4;
+  level2bkgd3.width = game.width * 3.5;
   // level2bkgd3.height = game.height;
   level2bkgd3.visible = false;
 
   level2bkgd1 = game.add.sprite(0, 0, 'level 2 layer1');
-  level2bkgd1.width = game.width * 3.4;
+  level2bkgd1.width = game.width * 3.5;
   level2bkgd1.visible = false;
 
   for (let index = 0; index < MAX_AIR; index++) {
@@ -24,6 +24,19 @@ function createLevel2Stuff() {
 
   airLabel = game.add.sprite(0, 0, 'airLabel');
   airLabel.visible = false;
+}
+
+function touchBottom(){
+if(hunter.body.y<=game.height/2){
+  if (levelOver)
+    return;
+  hunter.frame = 0;
+  hunter.rotation = 0;
+  hunter.body.velocity.x = JUMP_VELOCITY_X / 2;
+  hunter.body.velocity.y = JUMP_VELOCITY_Y * 1.5;
+  game.physics.box2d.gravity.y = 500;
+  levelOver = true;
+}
 }
 
 function buildLevel2() {
@@ -51,7 +64,12 @@ function buildLevel2() {
   hunter.rotation.toFixed();
   hunter.body.velocity.y = 1;
   hunter.body.velocity.x = 1;
-  game.physics.box2d.gravity.y = 0;
+  hunter.body.setBodyContactCallback(
+    level2bkgd1,
+    touchBottom,
+    this,
+  );
+    game.physics.box2d.gravity.y = 0;
   levelWidth = game.width;
   levelHeight = game.height;
 }
@@ -64,10 +82,9 @@ function updateLevel2() {
         crocs.children.length<maxCrocs &&
         level2bkgd1.x > 0
       ) {
-        spawnCroc();
+       // spawnCroc();
       }
-    if (level2bkgd1.x < -500)
-      touchGround();
+ 
 
     if (levelOver && levelOverTimer < 60) {
       {
@@ -105,10 +122,10 @@ function updateLevel2() {
     if (hunter.swimCount > 50 && !levelOver) {
       hunter.frame = hunter.frame === 4 ? 5 : 4;
       hunter.swimCount = 0;
-      if (hunter.body.y > 320) breathe();
-      else {
-        resetAir();
-      }
+      if (hunter.body.y > game.height / 2) 
+        breathe();
+      else 
+         resetAir();
     }
 
     level2bkgd3.x -= 0.5;
@@ -142,7 +159,6 @@ function arrowClick(gameObject)
 {
      switch (gameObject.name) {
     case 'right':
-      console.log(gameObject.name);
       hunter.body.velocity.x++;
     break;
     case 'left':
@@ -283,13 +299,3 @@ function resetAir() {
   }
 }
 
-function touchGround() {
-  if (levelOver)
-    return;
-  hunter.frame = 0;
-  hunter.rotation = 170;
-  hunter.body.velocity.x = JUMP_VELOCITY_X / 2;
-  hunter.body.velocity.y = JUMP_VELOCITY_Y * 1.5;
-  game.physics.box2d.gravity.y = 500;
-  levelOver = true;
-}
