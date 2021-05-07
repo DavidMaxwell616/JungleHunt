@@ -45,7 +45,7 @@ function buildLevel2() {
     //console.log(i, air[i]);
   }
   airLabel.reset(game.width * 0.77, 92);
-  amountCrocs = 2 + curLevel;
+  amountCrocs = curLevel * 2;
   game.stage.backgroundColor = '#B0DAFF';
   level2bkgd1.reset(0, game.height * 0.69);
   level2bkgd3.reset(0, game.height * 0.65);
@@ -60,8 +60,8 @@ function buildLevel2() {
   hunter.reset(145, 350);
   hunter.swimCount = 0;
   hunter.frame = 4;
-  hunter.body.rotation = 30;
-  hunter.rotation.toFixed();
+  hunter.body.rotation = 0;
+  hunter.body.rotation.toFixed();
   hunter.body.velocity.y = 1;
   hunter.body.velocity.x = 1;
   hunter.body.setBodyContactCallback(
@@ -77,18 +77,22 @@ function buildLevel2() {
 function updateLevel2() {
   if (level2bkgd1.x > -600) {
   game.world.bringToTop(crocs);
-    if (
+  game.world.bringToTop(bubbles);
+  if (
         game.rnd.integerInRange(1, 200) === 1 &&
         crocs.children.length<maxCrocs &&
-        level2bkgd1.x > 0
+        level2bkgd1.x > 30
       ) {
-       // spawnCroc();
+       spawnCroc();
       }
- 
+
+if(level2bkgd1.x > 30 && hunter.body.y<game.height/2)
+hunter.body.y++;
 
     if (levelOver && levelOverTimer < 60) {
       {
-        hunter.rotation = 90;
+        hunter.body.rotation = 90;
+        hunter.body.rotation.toFixed();
         levelOverTimer++;
       }
     } else if (levelOver) {
@@ -99,26 +103,25 @@ function updateLevel2() {
       killObjects2();
       buildLevel();
     }
-    //if (hunter.body.x > 300) {
-    if(game.rnd.integerInRange(1, 200) === 1) 
+    if(game.rnd.integerInRange(1, 200) === 1 && level2bkgd1.x > 30) 
       spawnBubbles();
+ 
     arrows.forEach(arrow => {
       arrow.events.onInputDown.add(arrowClick, this);
     });
   
-    //if (curLevel === 2)
-      moveCrocs();
+    moveCrocs();
     drawScore();
     drawLives();
+    moveBubbles();
+    
     arrows.forEach(arrow => {
       arrow.visible = true;
       arrow.x = arrow.width*.25+40+arrow.xOffset+game.camera.x;
      });
-    moveBubbles();
     hunter.swimCount++;
     hunter.body.rotation = 30;
-    // console.log(`${hunter.swimCount} ${hunter.frame}`);
-
+    
     if (hunter.swimCount > 50 && !levelOver) {
       hunter.frame = hunter.frame === 4 ? 5 : 4;
       hunter.swimCount = 0;
@@ -146,10 +149,12 @@ function updateLevel2() {
     } else if (game.fireButton.isDown) {
       hunter.frame = 6;
     }
-    if (hunter.y < game.height / 2 && hunter.body.velocity.y < 0 && !levelOver) {
+    if (hunter.body.y < game.height / 2 && hunter.body.velocity.y < 0 && !levelOver) {
       hunter.body.velocity.y = 0;
     }
   } else {
+    if(!levelOver)
+    hunter.body.x+=2;
     game.camera.target = null;
   }
 
@@ -240,10 +245,10 @@ function moveCrocs() {
 function moveBubbles() {
 bubbles.children.forEach(bubble => {
   bubble.body.velocity.y = -25;
-  bubble.body.velocity.x = -25;
+  bubble.body.velocity.x = -55;
   if (bubble.y < game.height / 2) 
     bubble.destroy();
-  if (collisionTest(hunter, bubbles) && hunter.frame === 6) 
+  if (collisionTest(hunter, bubble) && hunter.frame === 6) 
     bubble.destroy();
 });
 
@@ -267,12 +272,10 @@ crocs.add(croc);
 }
 
 function spawnBubbles() {
-  var bubble = game.add.sprite(0, 0, 'bubbles');
+  var bubble = game.add.sprite(game.width+game.camera.x, game.height, 'bubbles');
   bubble.animations.add('bubble');
   game.physics.box2d.enable(bubble);
 
-  bubble.x =game.width - game.rnd.integerInRange(50, 300);
-  bubble.y =  game.height - 100;
   bubble.animations.play('bubble', 10, true);
   bubbles.add(bubble);
 }
