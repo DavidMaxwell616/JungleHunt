@@ -125,7 +125,7 @@ hunter.body.y++;
     if (hunter.swimCount > 50 && !levelOver) {
       hunter.frame = hunter.frame === 4 ? 5 : 4;
       hunter.swimCount = 0;
-      if (hunter.body.y > game.height / 2) 
+      if (Math.floor(hunter.body.y) > game.height / 2) 
         breathe();
       else 
          resetAir();
@@ -231,9 +231,9 @@ function moveCrocs() {
       if (hunter.y > croc.y && x === 1) {
         croc.y++;
       } else if (hunter.y < croc.y && x === 1) {
-        croc.y -= 1;
+        croc.y -= curLevel;
       }
-      croc.x -= 1;
+      croc.x -= curLevel;
       if (croc.x < 0) {
         croc.x = game.width;
         const crocSize = game.rnd.integerInRange(50, 300);
