@@ -18,7 +18,7 @@ function mainMenuCreate() {
   maxxdaddy = game.add.image(0, game.height * 0.93, 'maxxdaddy');
 
  game.input.onDown.addOnce(StartGame, this);
- game.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+ game.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function mainMenuShowSplash() {
@@ -61,11 +61,11 @@ function mainMenuUpdate() {
     splashTick = 0;
   }
 
-  if (game.spaceKey.isDown) {StartGame();}
+  if (game.fireButton.isDown) {StartGame();}
 }
 
 function StartGame(){
-game.spaceKey = null;
+game.fireButton = null;
 splash1.visible = false;
 splash2.visible = false;
 splash3.visible = false;

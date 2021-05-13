@@ -42,7 +42,6 @@ if(hunter.body.y<=game.height/2){
 function buildLevel2() {
   for (let i = 0; i < MAX_AIR; i++) {
     air[i].reset(game.width * 0.85 + i * 16, 100);
-    //console.log(i, air[i]);
   }
   airLabel.reset(game.width * 0.77, 92);
   amountCrocs = curLevel * 2;
@@ -80,7 +79,7 @@ function updateLevel2() {
   game.world.bringToTop(bubbles);
   if (
         game.rnd.integerInRange(1, 200) === 1 &&
-        crocs.children.length<maxCrocs &&
+        crocs.children.length<amountCrocs &&
         level2bkgd1.x > 30
       ) {
        spawnCroc();

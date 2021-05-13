@@ -10,8 +10,10 @@ function createLevel4Stuff() {
 
   girl = game.add.sprite(0, 0, 'girl');
   girl.visible = false;
+  
+  amountTribesmen = curLevel-2;
 
-  for (let index = 0; index < maxTribesmen; index++) {
+  for (let index = 0; index < amountTribesmen; index++) {
     tribesmen[index] = game.add.sprite(0, 0, 'tribesman');
     tribesmen[index].visible = false;
     tribesmen[index].anchor.setTo(0.5, 0.5);

@@ -273,8 +273,8 @@ function drawText(x, y, str) {
 }
 
 function render() {
- if(level2bkgd1!=null)
-  game.debug.body(level2bkgd1);
+  if(level3bkgd1!=null)
+   game.debug.body(level3bkgd1);
 //    if (level3bkgd1 != null){
 //     game.debug.body(level3bkgd1);
 //     game.debug.box2dWorld();

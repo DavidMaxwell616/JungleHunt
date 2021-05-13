@@ -8,6 +8,7 @@ function createLevel1Stuff() {
   tree.anchor.set(0.5, 0.5);
   tree.height = game.height;
   tree.visible = false;
+  amountMonkeys = curLevel;
 
   level1bkgd2 = game.add.image(100, 0, 'level 1 layer2');
   level1bkgd2.width = game.width * 4;
@@ -16,7 +17,7 @@ function createLevel1Stuff() {
 
   if(curLevel>1)
     {  
-      for (let index = 0; index < maxMonkeys; index++) {
+      for (let index = 0; index < amountMonkeys; index++) {
         monkeys[index] = game.add.sprite(0, 0, 'monkey');
         game.physics.box2d.enable(monkeys[index]);
         monkeys[index].visible = false;
