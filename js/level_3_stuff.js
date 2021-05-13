@@ -44,11 +44,18 @@ function buildLevel3() {
   // levelHeight = game.height;
 }
 
+function onGroundCallback(){
+isJumping=false;
+}
+
+function onHitRock(){
+hitByRock=true;
+}
+
 function updateLevel3() {
-  if (hunter.x < 1190) {
-    // if (game.rnd.integerInRange(1, 2000) === 1) 
-       // spawnRock();
-  //}
+    if (game.rnd.integerInRange(1, 2000) === 1) 
+       spawnRock();
+  
     if (hunter.x < 200 && !hitByRock) {
       hunter.body.x = 200;
     }
@@ -56,22 +63,22 @@ function updateLevel3() {
     drawScore();
     drawLives();  
     hunter.body.rotation = 0;
-  if(level3bkgd1.x>-1200)
+
+    if (hunter.x < 20) {
+      currLives -= 1;
+      showintro = 1;
+      buildLevel3();
+    }
+
+    if(level3bkgd1.x>-1200)
   {
    level3bkgd2.x -= .5;
    level3bkgd3.x -= 1;
    level3bkgd1.body.x -= 1;
    }
-    if (game.cursors.right.isDown) {
-      hunter.body.velocity.x += 3;
-      hunter.body.velocity.y -= 3;
-    }
     if (game.fireButton.isDown && !hunter.isJumping) {
       hunter.body.velocity.y = -250;
       hunter.isJumping = true;
-    }
-    if (hunter.y < game.height / 2 && hunter.body.velocity.y < 0) {
-      hunter.body.velocity.y = 0;
     }
     if (game.time.now > runTime) {
       hunter.frame++;
@@ -81,14 +88,6 @@ function updateLevel3() {
       hunter.frame = 7;
     }
  
-    // if (!hunter.isJumping) {
-    //   hunter.body.velocity.y = -500;
-    //   if (hunter.body.velocity.x < 50)
-    //     hunter.body.velocity.x = 50;
-    // }
-  //  hunter.isJumping = true;
-  // game.camera.target = null;
-  }
     if (hunter.x > 1600) {
       showintro = true;
       curLevel++;
@@ -113,22 +112,29 @@ function spawnRock() {
   const rand = game.rnd.realInRange(1, 3);
   rock.scale.setTo(rand, rand);
   game.physics.box2d.enable(rock);
-  rock.body.velocity.x = -20;
+  rock.body.velocity.x = -209;
   rock.body.restitution = 0.7;
+  rock.body.mass=100;
+  hunter.body.setBodyContactCallback(
+    rock.body,
+    onHitRock,
+    this,
+  );
   rocks.add(rock);
 }
 
 function moveRocks() {
 rocks.forEach(rock => {
       rock.rotation -= 60;
-      if (game.rnd.integerInRange(1, 500) === 1) {
-        rock.body.velocity.y = -200;
-      }
+      // if (game.rnd.integerInRange(1, 500) === 1) {
+      //   rock.body.velocity.y = -200;
+      // }
+      rock.body.velocity.x = -209;
       const rockRadius = rock.width/2;
       if (rock.x-rockRadius < game.camera.x+rockRadius) {
         curScore+=100;
         rock.destroy();
-      //  spawnRock();
+        spawnRock();
       }
 });
 }
