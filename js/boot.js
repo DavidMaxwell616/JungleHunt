@@ -21,7 +21,7 @@ let splash4;
 let splash5;
 let maxxdaddy;
 let currLives = 3;
-let curLevel = 3;
+let curLevel = 4;
 let curVine = 0;
 let curSegment = 0;
 let textTimer;

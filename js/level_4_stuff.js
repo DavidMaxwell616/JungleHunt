@@ -1,7 +1,8 @@
 function createLevel4Stuff() {
   level4bkgd1 = game.add.sprite(0, 0, 'level 4 layer1');
   level4bkgd1.width = game.width;
-  level4bkgd1.visible = false;
+  level4bkgd1.height = game.height;
+ level4bkgd1.visible = false;
   level4bkgd1.anchor.set(0, 0);
 
   cauldron = game.add.sprite(0, 0, 'cauldron');
@@ -10,18 +11,10 @@ function createLevel4Stuff() {
 
   girl = game.add.sprite(0, 0, 'girl');
   girl.visible = false;
-  
+  const curGirl = 2;
+  girl.frame = curGirl;
   amountTribesmen = curLevel-2;
 
-  for (let index = 0; index < amountTribesmen; index++) {
-    tribesmen[index] = game.add.sprite(0, 0, 'tribesman');
-    tribesmen[index].visible = false;
-    tribesmen[index].anchor.setTo(0.5, 0.5);
-    tribesmen[index].state = DEAD;
-    tribesmen[index].animations.add('dance');
-  }
-  levelWidth = game.width;
-  levelHeight = game.height;
 }
 
 function buildLevel4() {
@@ -30,20 +23,24 @@ function buildLevel4() {
   game.physics.box2d.enable(level4bkgd1);
   level4bkgd1.body.static = true;
   level4bkgd1.body.clearFixtures();
-  level4bkgd1.body.loadPolygon('physicsData', 'ground', level4bkgd1);
+  level4bkgd1.body.loadPolygon('physicsData', 'ground2', level4bkgd1);
   level4bkgd1.visible = true;
-  spawnTribesmen();
-  cauldron.reset(680, 540);
-  game.physics.box2d.enable(cauldron);
+ for(var i=0;i<=amountTribesmen;i++)
+  {
+    spawnTribesmen();
+  }
+  cauldron.reset(500, 360);
+  cauldron.visible = true;
+  //game.physics.box2d.enable(cauldron);
   cauldron.animations.play('cauldron', 8, true);
-  cauldron.body.static = true;
-  vines[0] = createVines(0, 15, 'vine2', 660, 125);
+  //cauldron.body.static = true;
+  vines[0] = createVines(0, 13, 'vine2', 500,65);
   girl.reset(500, 250);
   game.physics.box2d.enable(girl);
-  j = game.physics.box2d.revoluteJoint(vines[0][14], girl);
+  j = game.physics.box2d.revoluteJoint(vines[0][12], girl);
   girl.body.rotation = 90;
   girl.bringToTop();
-  hunter.reset(50, 550);
+  hunter.reset(50, 400);
   hunter.frame = 11;
   levelOver = false;
   hunter.body.setBodyContactCallback(
@@ -110,9 +107,9 @@ function killObjects4() {
   level4bkgd1.destroy();
   cauldron.destroy();
   girl.destroy();
-  for (let index = 0; index < MAX_TRIBESMEN; index++) {
-    tribesmen[index].destroy();
-  }
+ tribesmen.forEach(tribesman => {
+  tribesman.destroy();
+ });
 }
 
 function onGroundCallback() {
@@ -124,20 +121,21 @@ function kiss() {
 }
 
 function spawnTribesmen() {
-  for (let index = 0; index < MAX_TRIBESMEN; index++) {
-    tribesmen[index].reset((index + 1) * 200, 520);
-    tribesmen[index].animations.play('dance', 10, true);
-    tribesmen[index].state = ALIVE;
-    game.physics.box2d.enable(tribesmen[index]);
-    tribesmen[index].walkingSpeed = -1;
+  var x = game.rnd.realInRange(100, 400);
+    var tribesman = game.add.sprite(x, 400, 'tribesman');
+    tribesman.anchor.setTo(0.5, 0.5);
+    tribesman.animations.add('dance');
+    tribesman.animations.play('dance', 10, true);
+    game.physics.box2d.enable(tribesman);
+    tribesman.walkingSpeed =  game.rnd.realInRange(1, 2)==2?-1:1;
+    tribesmen.push(tribesman);
   }
-}
 
 function moveTribesmen() {
-  for (let index = 0; index < MAX_TRIBESMEN; index++) {
-    tribesmen[index].x += tribesmen[index].walkingSpeed;
-    if (tribesmen[index].x < 10 || tribesmen[index].x > 450) {
-      tribesmen[index].walkingSpeed *= -1;
-    }
+ tribesmen.forEach(tribesman => {
+  tribesman.x += tribesman.walkingSpeed;
+  if (tribesman.x < 10 || tribesman.x > 750) {
+    tribesman.walkingSpeed *= -1;
   }
-}
+ })
+ }
