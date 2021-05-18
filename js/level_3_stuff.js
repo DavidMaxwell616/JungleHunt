@@ -115,7 +115,7 @@ function spawnRock() {
   rock.anchor.setTo(0.5, 0.5);
   rock.x = game.width + game.camera.x;
   rock.y =game.height *.3;
-  const rand = game.rnd.realInRange(1, 3);
+  const rand = game.rnd.integerInRange(1, 3);
   rock.scale.setTo(rand, rand);
   game.physics.box2d.enable(rock);
   rock.body.velocity.x = -209;

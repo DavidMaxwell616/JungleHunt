@@ -2,7 +2,7 @@ function createLevel4Stuff() {
   level4bkgd1 = game.add.sprite(0, 0, 'level 4 layer1');
   level4bkgd1.width = game.width;
   level4bkgd1.height = game.height;
- level4bkgd1.visible = false;
+  level4bkgd1.visible = false;
   level4bkgd1.anchor.set(0, 0);
 
   cauldron = game.add.sprite(0, 0, 'cauldron');
@@ -11,10 +11,8 @@ function createLevel4Stuff() {
 
   girl = game.add.sprite(0, 0, 'girl');
   girl.visible = false;
-  const curGirl = 2;
-  girl.frame = curGirl;
+  girl.frame = (curLevel-1) %3;
   amountTribesmen = curLevel-2;
-
 }
 
 function buildLevel4() {
@@ -121,13 +119,15 @@ function kiss() {
 }
 
 function spawnTribesmen() {
-  var x = game.rnd.realInRange(100, 400);
-    var tribesman = game.add.sprite(x, 400, 'tribesman');
+  var x = game.rnd.integerInRange(100, 400);
+    var tribesman = game.add.sprite(x, 380, 'tribesman');
     tribesman.anchor.setTo(0.5, 0.5);
     tribesman.animations.add('dance');
     tribesman.animations.play('dance', 10, true);
-    game.physics.box2d.enable(tribesman);
-    tribesman.walkingSpeed =  game.rnd.realInRange(1, 2)==2?-1:1;
+  //  game.physics.box2d.enable(tribesman);
+  var direction = game.rnd.integerInRange(1, 2);
+  console.log(direction);
+    tribesman.walkingSpeed = direction ==1?-1:1;
     tribesmen.push(tribesman);
   }
 
